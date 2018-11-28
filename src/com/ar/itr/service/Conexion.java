@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ar.itr.entity.Usuario;
+
 public class Conexion {
 	
 	public static void main(String[] args) throws SQLException {
@@ -37,7 +39,7 @@ public class Conexion {
 	}
 
 
-	public boolean leerUsuario(Connection con, String nombre, String password) throws SQLException {
+	public Usuario leerUsuario(Connection con, String nombre, String password) throws SQLException {
 		
 		Statement st =  con.createStatement();
 		 
@@ -46,10 +48,15 @@ public class Conexion {
 		ResultSet rs = st.executeQuery(sql);
 	
 		while(rs.next())
-			if(nombre.equals(rs.getString("nombre")) &&  password.equals(rs.getString("password")))
-				return true;
-		
-		return false;
+			if(nombre.equals(rs.getString("nombre")) &&  password.equals(rs.getString("password"))) {
+				Usuario usuario = new Usuario(rs.getInt("id"), 
+											  rs.getString("nombre"), 
+											  rs.getString("password"),
+											  rs.getString("role"));
+				return usuario;
+			}
+ 
+		return null;
 		
 	}
 

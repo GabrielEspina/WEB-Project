@@ -1,4 +1,8 @@
+com\ar\itr\dao\Validacion.class
+com\ar\itr\entity\IEntidad.class
+com\ar\itr\entity\Usuario.class
 com\ar\itr\service\Conexion.class
 com\ar\itr\demo\Main.class
+com\ar\itr\dao\Dispatchs.class
 com\ar\itr\demo\MySQLAccess.class
 com\ar\itr\demo\DemoServ.class

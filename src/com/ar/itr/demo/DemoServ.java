@@ -2,12 +2,11 @@ package com.ar.itr.demo;
 
 import javax.servlet.http.*;
 
-import com.ar.itr.service.Conexion;
+import com.ar.itr.dao.Validacion;
+import com.ar.itr.entity.Usuario;
 
 import javax.servlet.*;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public class DemoServ extends HttpServlet {
 	
@@ -16,49 +15,33 @@ public class DemoServ extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-		 
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 		
-		Connection con = new Conexion().execute();
+		Validacion valid = new Validacion();
 		
-		out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Inicio de sesion</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h3>Login</h3>");
-        
-        out.println("<html><head><title>Inicio de sesion</title></head><body><h3>Login</h3>");
+		String usr = request.getParameter("name");
+		String pass = request.getParameter("password");
 		
-		
-		
-		if( con != null) {
-			String name = req.getParameter("name");
-			String password = req.getParameter("password");
-			try {
-				if( new Conexion().leerUsuario( con , name , password ) ) 
-					out.println("Usuario Correcto:<br>" + name);
-				else 
-					out.println("Usuario Incorrecto:<br>" + name);
-				
-			} catch (SQLException e) {
-				
-				out.println("Error:<br>" + e.getMessage());
-				
-				e.printStackTrace();
-			}
-
-	        out.println("</body>");
-	        out.println("</head>");
-	        out.println("</html>");
-		}
+		Usuario user ;
+ 
+		if( (user = valid.validarSesion(usr, pass)) != null ) {
+			request.setAttribute( "error" , "OK");
+			request.setAttribute("usuario", user);
 			
-		
-		
-        
-	
+			request.getRequestDispatcher("/menu"+user.getRole()+".jsp").forward(request, response);
+
+		}else {
+			
+			request.setAttribute( "error" , "Error en login");
+			
+			
+
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			
+			
+		}
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {

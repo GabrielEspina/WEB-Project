@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -27,6 +30,7 @@
           <div class="form-group">
             <label for="InputPassword">Password</label>
             <input name="password"type="password" class="form-control" id="InputPassword" placeholder="Ingrese Password" required>
+            <label style = "color: red;"> <%= request.getAttribute("error") %> </label>
           </div>
 <!-- <div class="form-group form-check">
   <input type="checkbox" class="form-check-input" id="Check">
